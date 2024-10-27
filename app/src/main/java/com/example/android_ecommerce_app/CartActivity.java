@@ -45,6 +45,7 @@ public class CartActivity extends AppCompatActivity {
         binding.cartlist.addItemDecoration(itemDecoration);
         binding.cartlist.setAdapter(adapter);
 
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
