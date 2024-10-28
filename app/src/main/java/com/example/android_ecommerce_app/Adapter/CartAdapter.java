@@ -37,7 +37,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 .load(product.getImage())
                 .into(holder.binding.image);
         holder.binding.name.setText(product.getName());
-        holder.binding.price.setText("TK" + product.getPrice());
+        holder.binding.price.setText("৳" + product.getPrice());
     }
 
     @Override
