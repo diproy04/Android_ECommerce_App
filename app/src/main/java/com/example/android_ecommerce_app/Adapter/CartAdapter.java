@@ -40,6 +40,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.binding.price.setText("৳" + product.getPrice());
     }
 
+
     @Override
     public int getItemCount() {
         return products.size();
