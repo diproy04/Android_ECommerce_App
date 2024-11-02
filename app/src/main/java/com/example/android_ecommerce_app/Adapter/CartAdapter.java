@@ -1,6 +1,8 @@
 package com.example.android_ecommerce_app.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.android_ecommerce_app.R;
 import com.example.android_ecommerce_app.databinding.ItemcartBinding;
+import com.example.android_ecommerce_app.databinding.QuantityDialogBinding;
 import com.example.android_ecommerce_app.model.Product;
 
 import java.util.ArrayList;
@@ -38,6 +41,20 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 .into(holder.binding.image);
         holder.binding.name.setText(product.getName());
         holder.binding.price.setText("৳" + product.getPrice());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                QuantityDialogBinding quantityDialogBinding = QuantityDialogBinding.inflate(LayoutInflater.from(context));
+                AlertDialog daDialog=new AlertDialog.Builder(context)
+                        .setView(quantityDialogBinding.getRoot())
+                        .create();
+
+                daDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
+
+                daDialog.show();
+            }
+        });
     }
 
 
