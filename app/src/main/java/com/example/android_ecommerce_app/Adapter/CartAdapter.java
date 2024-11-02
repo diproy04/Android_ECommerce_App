@@ -52,6 +52,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
                 daDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
 
+
                 daDialog.show();
             }
         });
