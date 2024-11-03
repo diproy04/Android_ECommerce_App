@@ -1,8 +1,6 @@
 package com.example.android_ecommerce_app;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -15,7 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.android_ecommerce_app.Adapter.CartAdapter;
-import com.example.android_ecommerce_app.databinding.ActivityCartBinding;
+import com.example.android_ecommerce_app.databinding.ActivityCheckoutBinding;
 import com.example.android_ecommerce_app.model.Product;
 import com.hishd.tinycart.model.Cart;
 import com.hishd.tinycart.model.Item;
@@ -24,15 +22,19 @@ import com.hishd.tinycart.util.TinyCartHelper;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class CartActivity extends AppCompatActivity {
-    ActivityCartBinding binding;
+public class CheckoutActivity extends AppCompatActivity {
+    ActivityCheckoutBinding binding;
+
     CartAdapter adapter;
     ArrayList<Product> products;
+    double totalprice = 0;
+    final int tax = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        binding=ActivityCartBinding.inflate(getLayoutInflater());
+        binding = ActivityCheckoutBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -44,6 +46,7 @@ public class CartActivity extends AppCompatActivity {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(this.getColor(R.color.orange));
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         products=new ArrayList<>();
 
@@ -70,20 +73,14 @@ public class CartActivity extends AppCompatActivity {
 
         LinearLayoutManager layoutManager=new LinearLayoutManager(this);
         DividerItemDecoration itemDecoration=new DividerItemDecoration(this,layoutManager.getOrientation());
-        binding.cartlist.setLayoutManager(layoutManager);
-        binding.cartlist.addItemDecoration(itemDecoration);
-        binding.cartlist.setAdapter(adapter);
+        binding.cartList.setLayoutManager(layoutManager);
+        binding.cartList.addItemDecoration(itemDecoration);
+        binding.cartList.setAdapter(adapter);
 
         binding.subtotal.setText(String.format("৳ %.2f",cart.getTotalPrice()));
 
-        binding.continuebtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(CartActivity.this, CheckoutActivity.class));
-            }
-        });
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        totalprice= (cart.getTotalPrice().doubleValue() * tax / 100) + cart.getTotalPrice().doubleValue();
+        binding.total.setText("৳ " + totalprice);
     }
 
     @Override

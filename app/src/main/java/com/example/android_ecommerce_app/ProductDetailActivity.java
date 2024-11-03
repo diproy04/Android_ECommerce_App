@@ -69,7 +69,8 @@ public class ProductDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Product productToAdd = new Product(id, label, price, image);
                 cart.addItem(productToAdd,1);
-                Toast.makeText(ProductDetailActivity.this, "Product added to cart!", Toast.LENGTH_SHORT).show();
+                binding.addtocard.setEnabled(false);
+                binding.addtocard.setText("Added in cart");
             }
         });
     }

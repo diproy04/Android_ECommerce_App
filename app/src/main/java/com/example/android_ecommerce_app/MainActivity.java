@@ -1,5 +1,6 @@
 package com.example.android_ecommerce_app;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +26,7 @@ import com.example.android_ecommerce_app.databinding.ActivityMainBinding;
 import com.example.android_ecommerce_app.model.Category;
 import com.example.android_ecommerce_app.model.Product;
 import com.example.android_ecommerce_app.untils.Constants;
+import com.mancj.materialsearchbar.MaterialSearchBar;
 
 import org.imaginativeworld.whynotimagecarousel.model.CarouselItem;
 import org.json.JSONArray;
@@ -53,6 +55,26 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        binding.searchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
+            @Override
+            public void onSearchStateChanged(boolean enabled) {
+
+            }
+
+            @Override
+            public void onSearchConfirmed(CharSequence text) {
+                Intent intent=new Intent(MainActivity.this, SearchActivity.class);
+                intent.putExtra("query",text.toString());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onButtonClicked(int buttonCode) {
+
+            }
+        });
+
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
