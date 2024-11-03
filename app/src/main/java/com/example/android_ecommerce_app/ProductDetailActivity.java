@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -16,9 +18,20 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.android_ecommerce_app.databinding.ActivityProductDetailBinding;
+import com.example.android_ecommerce_app.model.Product;
+import com.example.android_ecommerce_app.untils.Constants;
+import com.hishd.tinycart.model.Cart;
+import com.hishd.tinycart.util.TinyCartHelper;
 
 public class ProductDetailActivity extends AppCompatActivity {
     ActivityProductDetailBinding binding;
+
+    Product currentProduct;
+
+    public static final String EXTRA_LABEL = "label";
+    public static final String EXTRA_IMAGE = "image";
+    public static final String EXTRA_ID = "id";
+    public static final String EXTRA_PRICE = "price";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +49,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(this.getColor(R.color.orange));
 
-
         String label=getIntent().getStringExtra("label");
         String image=getIntent().getStringExtra("image");
         int id=getIntent().getIntExtra("id",0);
@@ -49,6 +61,17 @@ public class ProductDetailActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(label);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Cart cart = TinyCartHelper.getCart();
+
+        binding.addtocard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Product productToAdd = new Product(id, label, price, image);
+                cart.addItem(productToAdd,1);
+                Toast.makeText(ProductDetailActivity.this, "Product added to cart!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

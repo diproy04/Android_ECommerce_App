@@ -15,8 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.android_ecommerce_app.Adapter.CartAdapter;
 import com.example.android_ecommerce_app.databinding.ActivityCartBinding;
 import com.example.android_ecommerce_app.model.Product;
+import com.hishd.tinycart.model.Cart;
+import com.hishd.tinycart.model.Item;
+import com.hishd.tinycart.util.TinyCartHelper;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class CartActivity extends AppCompatActivity {
     ActivityCartBinding binding;
@@ -41,17 +45,34 @@ public class CartActivity extends AppCompatActivity {
 
         products=new ArrayList<>();
 
-        products.add(new Product("Product1","---","1234",45,45,45,1));
-        products.add(new Product("Product2","---","1234",45,45,45,1));
-        products.add(new Product("Product3","---","1234",45,45,45,1));
+        Cart cart = TinyCartHelper.getCart();
 
-        adapter=new CartAdapter(this,products);
+        for(Map.Entry<Item,Integer>item:cart.getAllItemsWithQty().entrySet()){
+            Product product = (Product) item.getKey();
+            int quantity =item.getValue();
+            product.setQuantity(quantity);
+
+            products.add(product);
+        }
+
+        products.add(new Product("Loafer Styles' Rubber Sole Winter and Summer Wind Proof Shoe For Men","https://img.drz.lazcdn.com/static/bd/p/6814671e70cd16bae08f0021449db7c3.jpg_720x720q80.jpg","1234",350,12,5,1));
+        products.add(new Product("HAIER 1.5 Ton UltimateCool Inverter AC HSU-18UltimateCool:(INV)(UV)(Wifi)(QF)","https://lahorestores.com/wp-content/uploads/2022/05/Haier-HSU-18HFPCA-Inverter-Air-Conditioner-Black.jpg","1234",80990,45,4,2));
+        products.add(new Product("Harry Potter 1-3 (3 Books Set) Paperback","https://img.drz.lazcdn.com/static/bd/p/13a5f2d7b71e08475f734096feb0889e.jpg_720x720q80.jpg","1234",224,14,10,3));
+
+        adapter=new CartAdapter(this, products, new CartAdapter.CartListener() {
+            @Override
+            public void onQuantityChanged() {
+                binding.subtotal.setText(String.format("৳ %.2f",cart.getTotalPrice()));
+            }
+        });
 
         LinearLayoutManager layoutManager=new LinearLayoutManager(this);
         DividerItemDecoration itemDecoration=new DividerItemDecoration(this,layoutManager.getOrientation());
         binding.cartlist.setLayoutManager(layoutManager);
         binding.cartlist.addItemDecoration(itemDecoration);
         binding.cartlist.setAdapter(adapter);
+
+        binding.subtotal.setText(String.format("৳ %.2f",cart.getTotalPrice()));
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
