@@ -10,8 +10,10 @@ import android.view.WindowManager;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
+import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.android.volley.Request;
@@ -26,6 +28,7 @@ import com.example.android_ecommerce_app.databinding.ActivityMainBinding;
 import com.example.android_ecommerce_app.model.Category;
 import com.example.android_ecommerce_app.model.Product;
 import com.example.android_ecommerce_app.untils.Constants;
+import com.google.android.material.navigation.NavigationView;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 
 import org.imaginativeworld.whynotimagecarousel.model.CarouselItem;
@@ -43,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
 
     ProductAdapter productAdapter;
     ArrayList<Product> productArrayList;
+    DrawerLayout drawer;
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        drawer=findViewById(R.id.main);
+        navigationView=findViewById(R.id.nav_view);
         binding.searchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
             @Override
             public void onSearchStateChanged(boolean enabled) {
@@ -71,7 +78,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onButtonClicked(int buttonCode) {
-
+                switch (buttonCode){
+                    case MaterialSearchBar.BUTTON_NAVIGATION:
+                        drawer.openDrawer(GravityCompat.START);
+                        break;
+                }
             }
         });
 
